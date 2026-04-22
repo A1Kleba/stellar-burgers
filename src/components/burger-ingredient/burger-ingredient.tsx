@@ -1,14 +1,8 @@
-import { FC, memo, useEffect } from 'react';
+import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
-import {
-  AppDispatch,
-  RootState,
-  useDispatch,
-  useSelector
-} from '../../services/store';
+import { RootState, useDispatch, useSelector } from '../../services/store';
 import { addIngredientToOrder } from '../../services/order/order-slice';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = ({

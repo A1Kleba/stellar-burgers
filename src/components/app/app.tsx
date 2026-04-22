@@ -1,13 +1,29 @@
-import { ConstructorPage, Feed, ForgotPassword, Login, NotFound404, Profile, ProfileOrders, Register, ResetPassword } from '@pages';
+import {
+  ConstructorPage,
+  Feed,
+  ForgotPassword,
+  Login,
+  NotFound404,
+  Profile,
+  ProfileOrders,
+  Register,
+  ResetPassword
+} from '@pages';
 import styles from './app.module.css';
 import { useEffect } from 'react';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Preloader } from '@ui';
 import { useDispatch, RootState, useSelector } from '../../services/store';
-import { useLocation, useMatch, useNavigate, Routes, Route } from 'react-router-dom';
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  Routes,
+  Route
+} from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { getIngredients } from '../../services/ingredients/ingredients-slice';
-import { getUserThunk } from '../../services/user/actions';
+import { getUserThunk } from '../../services/user/userThunks';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -15,7 +31,8 @@ const App = () => {
   const location = useLocation();
   const background = location.state?.background;
 
-  const profileOrderId = useMatch('/profile/orders/:number')?.params.number || null;
+  const profileOrderId =
+    useMatch('/profile/orders/:number')?.params.number || null;
   const feedId = useMatch('/feed/:number')?.params.number || null;
 
   useEffect(() => {
@@ -23,8 +40,12 @@ const App = () => {
     dispatch(getUserThunk());
   }, []);
 
-  const isIngredientsLoading = useSelector((state: RootState) => state.ingredients.isLoading);
-  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients);
+  const isIngredientsLoading = useSelector(
+    (state: RootState) => state.ingredients.isLoading
+  );
+  const ingredients = useSelector(
+    (state: RootState) => state.ingredients.ingredients
+  );
   const error = null;
 
   return (

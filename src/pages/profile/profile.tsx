@@ -1,10 +1,9 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RootState, useDispatch, useSelector } from '../../services/store';
-import { updateUserThunk } from '../../services/user/actions';
+import { updateUserThunk } from '../../services/user/userThunks';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
   const user = useSelector((state: RootState) => state.user.user!);
   const dispatch = useDispatch();
 

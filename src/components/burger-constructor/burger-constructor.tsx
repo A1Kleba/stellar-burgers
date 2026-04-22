@@ -9,7 +9,9 @@ export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const constructorItems: TCurrentOrder = useSelector((state: RootState) => state.order.current);
+  const constructorItems: TCurrentOrder = useSelector(
+    (state: RootState) => state.order.current
+  );
   const user = useSelector(selectUser);
 
   const orderRequest = useSelector(

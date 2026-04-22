@@ -1,19 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getUserThunk, authLogin, logoutThunk, authRegister, updateUserThunk } from './actions';
+import { getUserThunk, authLogin, logoutThunk, authRegister, updateUserThunk } from './userThunks';
 
 export interface UserState {
-  isInit: boolean;
-  isLoading: boolean;
-  user: TUser | null;
-  isAuth: boolean;
+  user: TUser | null,
+  isInit: boolean,
+  isAuth: boolean,
+  isLoading: boolean
 }
 
 const initialState: UserState = {
-  isInit: false,
-  isLoading: false,
   user: null,
-  isAuth: false
+  isInit: false,
+  isAuth: false,
+  isLoading: false
+};
+
+const handlePending = (state: UserState) => {
+  state.isLoading = true;
+};
+
+const handleRejected = (state: UserState) => {
+  state.isLoading = false;
 };
 
 export const userSlice = createSlice({
@@ -21,8 +29,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<TUser | null>) => {
-      state.user = action.payload;
-      state.isAuth = !!action.payload;
+      const user = action.payload;
+      state.user = user;
+      state.isAuth = user !== null;
     },
     setIsInit: (state, action: PayloadAction<boolean>) => {
       state.isInit = action.payload;
@@ -38,66 +47,52 @@ export const userSlice = createSlice({
     selectIsAuth: (state) => state.isAuth
   },
   extraReducers: (builder) => {
-    builder.addCase(authLogin.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(authLogin.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      state.isInit = true;
-      state.user = payload.user;
-      state.isAuth = true;
-    });
-    builder.addCase(authLogin.rejected, (state) => {
-      state.isLoading = false;
-    });
-    builder.addCase(authRegister.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(authRegister.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      state.isInit = true;
-      state.user = payload.user;
-      state.isAuth = true;
-    });
-    builder.addCase(authRegister.rejected, (state) => {
-      state.isLoading = false;
-    });
-    builder.addCase(getUserThunk.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(getUserThunk.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      state.isInit = true;
-      state.user = payload.user;
-      state.isAuth = !!payload.user;
-    });
-    builder.addCase(getUserThunk.rejected, (state) => {
-      state.isLoading = false;
-      state.isAuth = false;
-    });
-    builder.addCase(logoutThunk.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(logoutThunk.fulfilled, (state) => {
-      state.isLoading = false;
-      state.isInit = false;
-      state.user = null;
-      state.isAuth = false;
-    });
-    builder.addCase(logoutThunk.rejected, (state) => {
-      state.isLoading = false;
-    });
     builder
-      .addCase(updateUserThunk.pending, (state) => {
-        state.isLoading = true;
+      .addCase(authLogin.pending, handlePending)
+      .addCase(authLogin.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isInit = true;
+        state.user = payload.user;
+        state.isAuth = true;
       })
+      .addCase(authLogin.rejected, handleRejected)
+
+      .addCase(authRegister.pending, handlePending)
+      .addCase(authRegister.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isInit = true;
+        state.user = payload.user;
+        state.isAuth = true;
+      })
+      .addCase(authRegister.rejected, handleRejected)
+
+      .addCase(getUserThunk.pending, handlePending)
+      .addCase(getUserThunk.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isInit = true;
+        state.user = payload.user;
+        state.isAuth = !!payload.user;
+      })
+      .addCase(getUserThunk.rejected, (state) => {
+        state.isLoading = false;
+        state.isAuth = false;
+      })
+
+      .addCase(logoutThunk.pending, handlePending)
+      .addCase(logoutThunk.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isInit = false;
+        state.user = null;
+        state.isAuth = false;
+      })
+      .addCase(logoutThunk.rejected, handleRejected)
+
+      .addCase(updateUserThunk.pending, handlePending)
       .addCase(updateUserThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.user = payload.user;
       })
-      .addCase(updateUserThunk.rejected, (state) => {
-        state.isLoading = false;
-      });
+      .addCase(updateUserThunk.rejected, handleRejected);
   }
 });
 

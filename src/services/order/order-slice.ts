@@ -1,6 +1,16 @@
-import {getFeedsApi, getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
+import {
+  getFeedsApi,
+  getOrderByNumberApi,
+  getOrdersApi,
+  orderBurgerApi
+} from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient, TOrder, TOrdersData } from '@utils-types';
+import {
+  TConstructorIngredient,
+  TIngredient,
+  TOrder,
+  TOrdersData
+} from '@utils-types';
 import { v4 as uuidv4 } from 'uuid';
 
 export type TCurrentOrder = {
@@ -62,7 +72,9 @@ export const getFeedsThunk = createAsyncThunk(
   }
 );
 
-export const getOrdersThunk = createAsyncThunk('orders/getAllOrdersUser', () => getOrdersApi());
+export const getOrdersThunk = createAsyncThunk('orders/getAllOrdersUser', () =>
+  getOrdersApi()
+);
 
 export const orderSlice = createSlice({
   name: 'order',

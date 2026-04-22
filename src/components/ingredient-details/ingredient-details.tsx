@@ -5,7 +5,6 @@ import { RootState, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
 
 export const IngredientDetails: FC = () => {
-  /** TODO: взять переменную из стора */
   const allIngredients = useSelector(
     (state: RootState) => state.ingredients.ingredients
   );
