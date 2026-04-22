@@ -10,7 +10,7 @@ import {
   ResetPassword
 } from '@pages';
 import styles from './app.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Preloader } from '@ui';
 import { useDispatch, RootState, useSelector } from '../../services/store';
@@ -24,6 +24,10 @@ import {
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { getIngredients } from '../../services/ingredients/ingredients-slice';
 import { getUserThunk } from '../../services/user/userThunks';
+import {
+  selectIsAuthChecked,
+  selectIsAuth
+} from '../../services/user/user-slice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,11 +39,10 @@ const App = () => {
     useMatch('/profile/orders/:number')?.params.number || null;
   const feedId = useMatch('/feed/:number')?.params.number || null;
 
-  useEffect(() => {
-    dispatch(getIngredients());
-    dispatch(getUserThunk());
-  }, []);
+  const [isInit, setIsInit] = useState(false);
 
+  const isAuthChecked = useSelector(selectIsAuthChecked);
+  const isAuth = useSelector(selectIsAuth);
   const isIngredientsLoading = useSelector(
     (state: RootState) => state.ingredients.isLoading
   );
@@ -47,6 +50,11 @@ const App = () => {
     (state: RootState) => state.ingredients.ingredients
   );
   const error = null;
+
+  useEffect(() => {
+    dispatch(getIngredients());
+    dispatch(getUserThunk());
+  }, []);
 
   return (
     <div className={styles.app}>

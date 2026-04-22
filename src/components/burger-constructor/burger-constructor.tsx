@@ -2,7 +2,11 @@ import { FC, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BurgerConstructorUI } from '@ui';
 import { RootState, useDispatch, useSelector } from '../../services/store';
-import { orderBurgerThunk, resetOrderData, TCurrentOrder } from '../../services/order/order-slice';
+import {
+  orderBurgerThunk,
+  resetOrderData,
+  TCurrentOrder
+} from '../../services/order/order-slice';
 import { selectUser } from '../../services/user/user-slice';
 
 export const BurgerConstructor: FC = () => {

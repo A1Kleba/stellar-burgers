@@ -1,19 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getUserThunk, authLogin, logoutThunk, authRegister, updateUserThunk } from './userThunks';
+import {
+  getUserThunk,
+  authLogin,
+  logoutThunk,
+  authRegister,
+  updateUserThunk
+} from './userThunks';
 
 export interface UserState {
-  user: TUser | null,
-  isInit: boolean,
-  isAuth: boolean,
-  isLoading: boolean
+  user: TUser | null;
+  isInit: boolean;
+  isAuth: boolean;
+  isLoading: boolean;
+  isAuthChecked: boolean;
 }
 
 const initialState: UserState = {
   user: null,
   isInit: false,
   isAuth: false,
-  isLoading: false
+  isLoading: false,
+  isAuthChecked: false
 };
 
 const handlePending = (state: UserState) => {
@@ -28,6 +36,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    authChecked: (state) => {
+      state.isAuthChecked = true;
+    },
     setUser: (state, action: PayloadAction<TUser | null>) => {
       const user = action.payload;
       state.user = user;
@@ -44,7 +55,8 @@ export const userSlice = createSlice({
     selectUser: (state) => state.user,
     selectIsAuthInit: (state) => state.isInit,
     selectIsLoading: (state) => state.isLoading,
-    selectIsAuth: (state) => state.isAuth
+    selectIsAuth: (state) => state.isAuth,
+    selectIsAuthChecked: (state) => state.isAuthChecked
   },
   extraReducers: (builder) => {
     builder
@@ -54,6 +66,7 @@ export const userSlice = createSlice({
         state.isInit = true;
         state.user = payload.user;
         state.isAuth = true;
+        state.isAuthChecked = true; // добавляем установку флага
       })
       .addCase(authLogin.rejected, handleRejected)
 
@@ -63,6 +76,7 @@ export const userSlice = createSlice({
         state.isInit = true;
         state.user = payload.user;
         state.isAuth = true;
+        state.isAuthChecked = true; // добавляем установку флага
       })
       .addCase(authRegister.rejected, handleRejected)
 
@@ -72,10 +86,12 @@ export const userSlice = createSlice({
         state.isInit = true;
         state.user = payload.user;
         state.isAuth = !!payload.user;
+        state.isAuthChecked = true; // устанавливаем после успешной проверки
       })
       .addCase(getUserThunk.rejected, (state) => {
         state.isLoading = false;
         state.isAuth = false;
+        state.isAuthChecked = true; // даже при ошибке — проверка завершена
       })
 
       .addCase(logoutThunk.pending, handlePending)
@@ -84,6 +100,7 @@ export const userSlice = createSlice({
         state.isInit = false;
         state.user = null;
         state.isAuth = false;
+        state.isAuthChecked = true; // проверка пройдена
       })
       .addCase(logoutThunk.rejected, handleRejected)
 
@@ -96,7 +113,14 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setIsInit, setIsLoading, setUser } = userSlice.actions;
-export const { selectUser, selectIsAuthInit, selectIsLoading, selectIsAuth } = userSlice.selectors;
+export const { setIsInit, setIsLoading, setUser, authChecked } =
+  userSlice.actions;
+export const {
+  selectUser,
+  selectIsAuthInit,
+  selectIsLoading,
+  selectIsAuth,
+  selectIsAuthChecked
+} = userSlice.selectors;
 
 export default userSlice.reducer;

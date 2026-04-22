@@ -21,7 +21,7 @@ const HEADERS = {
   JSON: { 'Content-Type': 'application/json;charset=utf-8' },
   AUTHORIZED: (token: string) => ({
     'Content-Type': 'application/json;charset=utf-8',
-    authorization: `Bearer ${token}`
+    authorization: token
   })
 } as const;
 
@@ -75,7 +75,7 @@ export const fetchWithRefresh = async <T>(
       const refreshData = await refreshToken();
       if (options.headers) {
         (options.headers as { [key: string]: string }).authorization =
-          `Bearer ${refreshData.accessToken}`;
+          refreshData.accessToken;
       }
       const res = await fetch(url, options);
       return await checkResponse<T>(res);
@@ -246,7 +246,7 @@ export const updateUserApi = (user: Partial<TRegisterData>) =>
     method: 'PATCH',
     headers: HEADERS.AUTHORIZED(getCookie('accessToken') || ''),
     body: JSON.stringify(user)
-  })
+  });
 
 export const logoutApi = () =>
   fetch(ENDPOINTS.AUTH_LOGOUT, {
@@ -256,4 +256,3 @@ export const logoutApi = () =>
       token: localStorage.getItem('refreshToken')
     })
   }).then((res) => checkResponse<TServerResponse<{}>>(res));
-

@@ -1,6 +1,9 @@
 import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
-import { selectIsAuth } from '../../services/user/user-slice';
+import {
+  selectIsAuth,
+  selectIsAuthChecked
+} from '../../services/user/user-slice';
 import { useSelector } from '../../services/store';
 
 type TProtectedRouteProps = {
@@ -12,18 +15,22 @@ export const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
   onlyUnAuth = false,
   children
 }) => {
-  const isAuthInit = useSelector(selectIsAuth);
+  const isAuth = useSelector(selectIsAuth);
+  const isAuthChecked = useSelector(selectIsAuthChecked);
   const location = useLocation();
 
-  if (isAuthInit === undefined) {
+  if (!isAuthChecked) {
     return <div>Loading...</div>;
   }
-  if (onlyUnAuth && isAuthInit) {
+
+  if (onlyUnAuth && isAuth) {
     return <Navigate replace to='/' />;
   }
-  if (!onlyUnAuth && !isAuthInit) {
+
+  if (!onlyUnAuth && !isAuth) {
     return <Navigate replace to='/login' state={{ from: location }} />;
   }
+
   return children;
 };
 
