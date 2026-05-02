@@ -3,7 +3,7 @@ import {
   getOrderByNumberApi,
   getOrdersApi,
   orderBurgerApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorIngredient,
@@ -23,7 +23,7 @@ type ConstructorPayload = {
   ingredients: TConstructorIngredient;
 };
 
-const initialState: {
+export const initialState: {
   isOrderLoading: boolean;
   isFeedLoading: boolean;
   isHistoryLoading: boolean;
@@ -98,9 +98,9 @@ export const orderSlice = createSlice({
     makeOrder: (state, { payload }) => {
       state.history.orders.push(payload);
     },
-    removeIngredient: (state, { payload }) => {
+    removeIngredient: (state, action: PayloadAction<string>) => {
       state.current.ingredients = state.current.ingredients.filter(
-        (item) => item.id !== payload.id
+        (item) => item.id !== action.payload
       );
     },
     moveIngredient: (
