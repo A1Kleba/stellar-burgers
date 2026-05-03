@@ -1,0 +1,44 @@
+{
+    "success": true,
+    "data": [
+        {
+            "_id": "60d5f8a1e8b9a2001f8b4567",
+            "name": "Булка с кунжутом",
+            "type": "bun",
+            "proteins": 80,
+            "fat": 24,
+            "carbohydrates": 53,
+            "calories": 420,
+            "price": 100,
+            "image": "https://example.com/bun.png",
+            "image_mobile": "https://example.com/bun-mobile.png",
+            "image_large": "https://example.com/bun-large.png"
+        },
+        {
+            "_id": "60d5f8a1e8b9a2001f8b4568",
+            "name": "Говядина",
+            "type": "main",
+            "proteins": 200,
+            "fat": 150,
+            "carbohydrates": 0,
+            "calories": 350,
+            "price": 250,
+            "image": "https://example.com/beef.png",
+            "image_mobile": "https://example.com/beef-mobile.png",
+            "image_large": "https://example.com/beef-large.png"
+        },
+        {
+            "_id": "60d5f8a1e8b9a2001f8b4569",
+            "name": "Соус BBQ",
+            "type": "sauce",
+            "proteins": 0,
+            "fat": 30,
+            "carbohydrates": 40,
+            "calories": 180,
+            "price": 50,
+            "image": "https://example.com/bbq.png",
+            "image_mobile": "https://example.com/bbq-mobile.png",
+            "image_large": "https://example.com/bbq-large.png"
+        }
+    ]
+}
