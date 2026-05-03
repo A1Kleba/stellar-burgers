@@ -35,27 +35,3 @@
 //     }
 //   }
 // }
-
-Cypress.Commands.add('addIngredientByName', (name: string) => {
-    cy.contains(name).parent('li').find('button').first().click();
-});
-
-Cypress.Commands.add('setTokens', () => {
-    cy.setCookie('accessToken', 'Bearer mock-token');
-    cy.window().then((win) => {
-        win.localStorage.setItem('refreshToken', 'mock-refresh');
-    });
-});
-
-Cypress.Commands.add('clearTokens', () => {
-    cy.clearCookie('accessToken');
-    cy.clearLocalStorage('refreshToken');
-});
-
-declare namespace Cypress {
-    interface Chainable {
-        addIngredientByName(name: string): Chainable<void>;
-        setTokens(): Chainable<void>;
-        clearTokens(): Chainable<void>;
-    }
-}
